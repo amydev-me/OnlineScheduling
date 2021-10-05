@@ -459,13 +459,11 @@
         }
 
         function onDragStart(e){
-            // e.preventDefault();
             e.dataTransfer.setData("application/json", e.target.dataset.data);
             e.dataTransfer.setData("Text", event.target.dataset.data.from_employee_name);
 
             e.dataTransfer.effectAllowed = 'move';
             dragParent = e.target.parentElement;
-            // console.log(e.target.dataset.data)
         }
         
         function onDragEnter(e){
@@ -478,7 +476,6 @@
 
         function onDragLeave(e){
             e.preventDefault();
-            // console.log(e.target.dataset.data)
         }
 
         function onDrop(ev){
@@ -511,14 +508,19 @@
             data[fromDataIndex][_fromKey] = cloneToId;
             data[toDataIndex][_toKey] = cloneFromId;
             
-            /**
+            removeAllElement();
+
+            loadData();
+        }
+
+        function removeAllElement(){
+               /**
              * Remove all main child element
              * */
             const myNode = document.getElementById("main");
             while (myNode.lastElementChild) {
                 myNode.removeChild(myNode.lastElementChild);
             }
-            loadData();
         }
     </script>
   </body>
