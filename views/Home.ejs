@@ -193,8 +193,106 @@
                     "day_name" : "Sunday"
                 }
         ];
-     
-        loadData();
+        let day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        // loadData();
+        loadEmptyTable();
+
+        function createColumnForData(rowShiftId, rowIndex, mainCol, shift, data = null){
+            for(let j = 1;j <= 3;j++){
+                let empColDiv = document.createElement("div");
+                empColDiv.id= `shift_${shift}_${mainCol}_emp_${rowIndex}_${j}`;
+                empColDiv.className = "card half-width";
+                empColDiv.draggable =  (j == 1 );
+                empColDiv.dataset.data = data;
+                empColDiv.addEventListener('dragstart', onDragStart)
+                empColDiv.addEventListener('dragenter', onDragEnter)
+                empColDiv.addEventListener('dragover', onDragOver)
+                empColDiv.addEventListener('dragleave', onDragLeave)
+                empColDiv.addEventListener('drop', onDrop)
+                empColDiv.innerHTML = '';
+                document.getElementById(rowShiftId).appendChild(empColDiv);
+            }
+        }
+        
+        function loadEmptyTable(){
+            /**
+             * Create Row and append div in 'main'
+             **/
+            for(let i = 0; i < 7; i++){
+                let row = document.createElement("div");
+                let rowId = "row" + i;
+                row.className="row";
+                row.id= rowId;
+                document.getElementById('main').appendChild(row);
+                /**
+                 * Create Day Name Div
+                 **/
+                let dayDiv = document.createElement("div");
+                dayDiv.className = "card full-width";
+                dayDiv.innerHTML = day[i];
+                document.getElementById(rowId).appendChild(dayDiv);
+
+                  /**
+                 * Create Shift 1 Row
+                 * */
+
+                let shiftDivS1 = document.createElement("div");
+                let shift_1_DivName = "shift_1_div_name_ac_"+ i;
+                shiftDivS1.id = shift_1_DivName;
+                shiftDivS1.className = "inline-block-display";
+                document.getElementById(rowId).appendChild(shiftDivS1);
+
+                let rowShift = document.createElement("div");
+                let rowShiftId = "row-shift-1-" + i;
+                rowShift.className="row";
+                rowShift.id= rowShiftId;
+                document.getElementById(shift_1_DivName).appendChild(rowShift);
+
+                let shitColDiv = document.createElement("div");
+                shitColDiv.className = "card half-width";
+                shitColDiv.innerHTML = `Shift-1`;
+                document.getElementById(rowShiftId).appendChild(shitColDiv);
+
+
+                /**
+                 * Create Shift 2 Row
+                 * */
+                let rowShift2 = document.createElement("div");
+                let rowShift2Id = "row-shift-2-" + i;
+                rowShift2.className="row";
+                rowShift2.id= rowShift2Id;
+                document.getElementById(shift_1_DivName).appendChild(rowShift2);
+
+                shitColDiv = document.createElement("div");
+                shitColDiv.className = "card half-width";
+                shitColDiv.innerHTML = `Shift-2`;
+                document.getElementById(rowShift2Id).appendChild(shitColDiv);
+
+                 /**
+                 * Create Shift 1 Employee Column  For AC
+                 * */
+                createColumnForData(rowShiftId, i, 'ac', 1)
+
+                 /**
+                 * Create Shift 1 Employee Column  For F&B
+                 * */
+                 createColumnForData(rowShiftId, i, 'fb', 1)
+
+                /**
+                 * Create Shift 2 Employee Column  For AC
+                 * */
+                 createColumnForData(rowShift2Id, i, 'ac', 2)
+              
+                /**
+                 * Create Shift 2 Employee Column  For F&B
+                 * */
+                 createColumnForData(rowShift2Id, i, 'fb', 2)
+               
+            }
+            
+        }
+
+
         function loadData(){            
                     
             for(let i=0, count = data.length ; i < count; i++){
