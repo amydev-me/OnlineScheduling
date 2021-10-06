@@ -31,11 +31,25 @@
         .inline-block-display {
             display: inline-block;
         }
+
+
+       
     </style>
   </head>
   <body>
-        <div class="container-fluid" >
-            <div id="main"></div>
+        <div style="width: 80%; margin: 0 auto;">
+            <div class="row no-gutters">
+               
+                <div class="col-12 col-lg-9 col-md-10 mr-5">  
+                    <div id="main"></div>
+                </div>
+                <div class="col-12 col-lg-2 col-md-2">
+                    <div id="users">
+                        
+
+                    </div>
+                </div>
+            </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -44,11 +58,58 @@
      
         let dragParent = null;
         let clone = null;
+        let users = [
+            {
+                id: 1,
+                name : 'Ali',
+                status : 'AC'
+            },
+            {
+                id: 2, 
+                name : "Bala",
+                status : 'FB',
+            },
+            {
+                id: 3, 
+                name : "Charles",
+                status : 'GA',
+            },
+            {
+                id: 4, 
+                name : "Danny",
+                status : 'GA',
+            },
+            {
+                id: 5, 
+                name : "Ella",
+                status : 'AC',
+            },
+            {
+                id: 6, 
+                name : "Francis",
+                status : 'FB',
+            },
+            {
+                id: 7, 
+                name : "Gina",
+                status : 'AC',
+            },
+            {
+                id: 8, 
+                name : "Hnnah",
+                status : 'GA',
+            },
+            {
+                id: 9, 
+                name : "Ivan",
+                status : 'GA',
+            }
+        ]
         let data = [
                 {
                     "id" : 1,
                     "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ali",
+                    "s1_shift_1_1_staff_id" : null,
                     "s1_shift_1_2_staff_id" : "Charles",
                     "s1_shift_1_3_staff_id" : "x",
                     "s1_shift_2_1_staff_id" : "Ella",
@@ -194,9 +255,25 @@
                 }
         ];
         let day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        // loadData();
-        
-        loadEmptyTable();
+        loadData();
+        loadUsers();
+        // loadEmptyTable();
+        function loadUsers(){
+            let ul = document.getElementById("users");
+            
+            for(let i = 0, count = users.length; i < count; i++){
+                let userDiv = document.createElement("div");
+                userDiv.id= `user_${users[i].id}`;
+                userDiv.className = "list-group-item";
+             
+                userDiv.draggable =  true;
+                userDiv.dataset.data = JSON.stringify(users[i]);
+                userDiv.addEventListener('dragstart', onDragStartUser)
+                userDiv.innerHTML = users[i].name;
+                document.getElementById('users').appendChild(userDiv);
+
+            }
+        }
 
         function createColumnForData(rowShiftId, rowIndex, mainCol, shift, data = null){
             for(let j = 1;j <= 3;j++){
@@ -459,7 +536,13 @@
             }
         }
 
+        function onDragStartUser(e){
+            e.dataTransfer.setData("application/user", e.target.dataset.data);
+            e.dataTransfer.effectAllowed = 'move';
+            dragParent = e.target.parentElement;
+        }
         function onDragStart(e){
+        
             e.dataTransfer.setData("application/json", e.target.dataset.data);
             e.dataTransfer.setData("Text", event.target.dataset.data.from_employee_name);
 
@@ -478,40 +561,64 @@
         function onDragLeave(e){
             e.preventDefault();
         }
-
+       
         function onDrop(ev){
-          
+            console.log('Drop')
             ev.preventDefault();
-            const from_data =  JSON.parse(ev.dataTransfer.getData("application/json"));
-            const to_data = JSON.parse(ev.target.dataset.data);          
-            
-            if(!to_data.draggable){alert("Currently Not available to assign this shift."); return;}
-            /**
-             * Find Index Of array
-             * */
-            let fromDataIndex = data.findIndex(e=> e.id == from_data.id);
-            let toDataIndex = data.findIndex(e=> e.id == to_data.id);
+           
+            const targetDiv = JSON.parse(ev.target.dataset.data);    
+            if(!targetDiv.draggable){alert("Currently Not available to assign this shift."); return;}
 
-             /**
-             * Create column name
-             * */
-            let _fromKey = `s${from_data.status}_shift_${from_data.shift}_${from_data.col}_staff_id`;
-            let _toKey = `s${to_data.status}_shift_${to_data.shift}_${to_data.col}_staff_id`;
+            let targetDataIndex = data.findIndex(e=> e.id == targetDiv.id);
+            let targetDivId = `s${targetDiv.status}_shift_${targetDiv.shift}_${targetDiv.col}_staff_id`;
 
-            /**
-             * copy data
-             * */
-            let cloneFromId = data[fromDataIndex][_fromKey];
-            let cloneToId = data[toDataIndex][_toKey];
-            /**
-             * swap by index
-             * */
-            data[fromDataIndex][_fromKey] = cloneToId;
-            data[toDataIndex][_toKey] = cloneFromId;
+
+            let userObjString = ev.dataTransfer.getData("application/user");
+            if(userObjString){
+                const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
+               
+                data[targetDataIndex][targetDivId] = user_data.name;
+          
+            }else{
+                const from_data =  JSON.parse(ev.dataTransfer.getData("application/json"));
             
+                /**
+                    * Find Index Of array
+                    * */
+                let fromDataIndex = data.findIndex(e=> e.id == from_data.id);
+
+                /**
+                * Create column name
+                * */
+                let _fromKey = `s${from_data.status}_shift_${from_data.shift}_${from_data.col}_staff_id`;
+               
+
+                /**
+                    * copy data
+                    * */
+                let cloneFromId = data[fromDataIndex][_fromKey];
+                let cloneTargetData = data[targetDataIndex][targetDivId];
+                /**
+                    * swap by index
+                    * */
+                data[fromDataIndex][_fromKey] = cloneTargetData;
+                data[targetDataIndex][targetDivId] = cloneFromId;
+        
+               
+            }
             removeAllElement();
 
             loadData();
+
+            /**
+             * Not drop from user list
+             * */
+            // if(!user_data){
+           
+            // }
+            // else{
+            //     console.log('User Data', user_data)
+            // }
         }
 
         function removeAllElement(){
