@@ -4,10 +4,11 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 
     <!-- Bootstrap CSS --> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
+   
     <title>Hello, world!</title>
     <style>
         .full-width {
@@ -37,17 +38,76 @@
     </style>
   </head>
   <body>
+       
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add New Staff</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form autocomplete="off">                        
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Staff name:</label>
+                            <input type="text" class="form-control" id="txt-staff-name">
+                          </div>
+                        <div class="form-group">
+                            <label for="txt-postalcode">Postal Code</label>
+                            <input type="text" class="form-control" id="txt-postalcode">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-8">
+                                <label for="txt-address">Building, Street, and etc</label>
+                                <input type="text" class="form-control" id="txt-address">
+                              </div>
+                              <div class="form-group col-md-4">
+                                <label for="txt-unitno">Floor/Unit Number</label>
+                                <input type="text" class="form-control" id="txt-unitno">
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-list" class="col-form-label">Status:</label>
+                            <select class="custom-select" id="status-list">
+                                <option selected>Choose...</option>
+                                <option value="AC">Trained in Amenity Center</option>
+                                <option value="FB">Trained in F&B</option>
+                                <option value="GA">Trained as GAS</option>
+                              </select>
+                        </div>
+                      </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="onClickedAddNewStaff">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
         <div style="width: 80%; margin: 0 auto;">
             <div class="row no-gutters">
-               
+                <!--<div class="col-12 col-lg-9 col-md-10 mr-5">  
+                    <div id="main">
+                        <div class="card text-white bg-primary mb-3" style="max-width: 150px;">
+                          
+                            <div class="card-body text-center">                            
+                              Shift
+                            </div>
+                          </div>
+                    </div>
+                </div>-->
                 <div class="col-12 col-lg-9 col-md-10 mr-5">  
                     <div id="main"></div>
                 </div>
                 <div class="col-12 col-lg-2 col-md-2">
-                    <div id="users">
-                        
-
-                    </div>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 100% !important;">
+                        <i class="fa-solid fa-plus mr-2"></i>Add New Staff
+                      </button>
+                    <div id="users"></div>
                 </div>
             </div>
         </div>
@@ -255,9 +315,9 @@
                 }
         ];
         let day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        loadData();
+        // loadData();
         loadUsers();
-        // loadEmptyTable();
+        loadEmptyTable();
         function loadUsers(){
             let ul = document.getElementById("users");
             
@@ -271,17 +331,26 @@
                 userDiv.addEventListener('dragstart', onDragStartUser)
                 userDiv.innerHTML = users[i].name;
                 document.getElementById('users').appendChild(userDiv);
-
             }
         }
 
-        function createColumnForData(rowShiftId, rowIndex, mainCol, shift, data = null){
+        function createColumnForData(rowShiftId, rowIndex, mainCol, shift, status, data = null){
+
+
             for(let j = 1;j <= 3;j++){
                 let empColDiv = document.createElement("div");
                 empColDiv.id= `shift_${shift}_${mainCol}_emp_${rowIndex}_${j}`;
                 empColDiv.className = "card half-width";
                 empColDiv.draggable =  (j == 1 );
-                empColDiv.dataset.data = data;
+                empColDiv.dataset.data = data ? data : JSON.stringify({
+                    id : null,
+                    from_employee_name :  null,
+                    status : status,
+                    shift : shift,
+                    div_id : empColDiv.id,
+                    col : j,
+                    draggable : empColDiv.draggable
+                });
                 empColDiv.addEventListener('dragstart', onDragStart)
                 empColDiv.addEventListener('dragenter', onDragEnter)
                 empColDiv.addEventListener('dragover', onDragOver)
@@ -349,22 +418,22 @@
                  /**
                  * Create Shift 1 Employee Column  For AC
                  * */
-                createColumnForData(rowShiftId, i, 'ac', 1)
+                createColumnForData(rowShiftId, i, 'ac', 1, 1)
 
                  /**
                  * Create Shift 1 Employee Column  For F&B
                  * */
-                 createColumnForData(rowShiftId, i, 'fb', 1)
+                 createColumnForData(rowShiftId, i, 'fb', 2, 1)
 
                 /**
                  * Create Shift 2 Employee Column  For AC
                  * */
-                 createColumnForData(rowShift2Id, i, 'ac', 2)
+                 createColumnForData(rowShift2Id, i, 'ac', 1, 2)
               
                 /**
                  * Create Shift 2 Employee Column  For F&B
                  * */
-                 createColumnForData(rowShift2Id, i, 'fb', 2)
+                 createColumnForData(rowShift2Id, i, 'fb', 2, 2)
                
             }
             
@@ -542,7 +611,6 @@
             dragParent = e.target.parentElement;
         }
         function onDragStart(e){
-        
             e.dataTransfer.setData("application/json", e.target.dataset.data);
             e.dataTransfer.setData("Text", event.target.dataset.data.from_employee_name);
 
@@ -563,52 +631,69 @@
         }
        
         function onDrop(ev){
-            console.log('Drop')
-            ev.preventDefault();
            
-            const targetDiv = JSON.parse(ev.target.dataset.data);    
-            if(!targetDiv.draggable){alert("Currently Not available to assign this shift."); return;}
+            ev.preventDefault();
 
-            let targetDataIndex = data.findIndex(e=> e.id == targetDiv.id);
-            let targetDivId = `s${targetDiv.status}_shift_${targetDiv.shift}_${targetDiv.col}_staff_id`;
-
-
-            let userObjString = ev.dataTransfer.getData("application/user");
-            if(userObjString){
-                const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
-               
-                data[targetDataIndex][targetDivId] = user_data.name;
+            const targetData = ev.target.dataset.data;
+            console.log(targetData)
+            // const targetDiv = JSON.parse(ev.target.dataset.data);
+           
+            if(!targetData){
+                let userObjString = ev.dataTransfer.getData("application/user");
+                if(userObjString){
+                    const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
+                  
+                    data[targetDataIndex][targetDivId] = user_data.name;
           
-            }else{
-                const from_data =  JSON.parse(ev.dataTransfer.getData("application/json"));
-            
-                /**
-                    * Find Index Of array
-                    * */
-                let fromDataIndex = data.findIndex(e=> e.id == from_data.id);
+                }
+            }
+            // else{
+            //     const targetDiv = JSON.parse(ev.target.dataset.data);    
+            //     if(!targetDiv.draggable){alert("Currently Not available to assign this shift."); return;}
 
-                /**
-                * Create column name
-                * */
-                let _fromKey = `s${from_data.status}_shift_${from_data.shift}_${from_data.col}_staff_id`;
+            //     let targetDataIndex = data.findIndex(e=> e.id == targetDiv.id);
+            //     let targetDivId = `s${targetDiv.status}_shift_${targetDiv.shift}_${targetDiv.col}_staff_id`;
+
+
+            //     let userObjString = ev.dataTransfer.getData("application/user");
+            //     if(userObjString){
+            //         const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
+               
+            //         data[targetDataIndex][targetDivId] = user_data.name;
+          
+            //     }else{
+            //         const from_data =  JSON.parse(ev.dataTransfer.getData("application/json"));
+            
+            //         /**
+            //             * Find Index Of array
+            //             * */
+            //         let fromDataIndex = data.findIndex(e=> e.id == from_data.id);
+
+            //         /**
+            //         * Create column name
+            //         * */
+            //         let _fromKey = `s${from_data.status}_shift_${from_data.shift}_${from_data.col}_staff_id`;
                
 
-                /**
-                    * copy data
-                    * */
-                let cloneFromId = data[fromDataIndex][_fromKey];
-                let cloneTargetData = data[targetDataIndex][targetDivId];
-                /**
-                    * swap by index
-                    * */
-                data[fromDataIndex][_fromKey] = cloneTargetData;
-                data[targetDataIndex][targetDivId] = cloneFromId;
+            //         /**
+            //             * copy data
+            //             * */
+            //         let cloneFromId = data[fromDataIndex][_fromKey];
+            //         let cloneTargetData = data[targetDataIndex][targetDivId];
+            //         /**
+            //             * swap by index
+            //             * */
+            //         data[fromDataIndex][_fromKey] = cloneTargetData;
+            //         data[targetDataIndex][targetDivId] = cloneFromId;
         
                
-            }
-            removeAllElement();
+            //     }
+            // }
 
-            loadData();
+            
+            // removeAllElement();
+
+            // loadData();
 
             /**
              * Not drop from user list
