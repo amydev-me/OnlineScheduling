@@ -1,6 +1,5 @@
 'use strict';
 
-
 let users = [
     {
         id: 1,
@@ -48,9 +47,9 @@ let users = [
         status : 'GA',
     }
 ]
-
+loadUsers();
 function loadUsers(){
-    let ul = document.getElementById("users");
+    
             
     for(let i = 0, count = users.length; i < count; i++){
         let userDiv = document.createElement("div");
@@ -69,5 +68,4 @@ function loadUsers(){
 function onDragStartUser(e){
     e.dataTransfer.setData("application/user", e.target.dataset.data);
     e.dataTransfer.effectAllowed = 'move';
-    dragParent = e.target.parentElement;
 }
