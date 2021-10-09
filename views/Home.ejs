@@ -8,38 +8,71 @@
 
     <!-- Bootstrap CSS --> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-   
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap" rel="stylesheet">
     <title>Hello, world!</title>
     <style>
+        body{
+            font-family: 'Roboto', sans-serif;
+            padding-top: 56px;
+            overflow-x: hidden;
+        }
         .full-width {
             font-weight:bold;
             color:#333333; 
-            height: 140px;
-            width:150px;
+            height: 120px;
+            width:120px;
             text-align: center;  
-            line-height: 140px;
+            line-height: 120px;
             border-radius: 0px;
         }
         .half-width {
             font-weight:bold;
             color:#333333; 
-            height: 70px;
-            width:150px;
+            height: 60px;
+            width:200px;
             text-align: center;  
-            line-height: 70px;
+            line-height: 60px;
             border-radius: 0px;
+        }
+        .empty-col {
+            height: 60px;
+            width:50px;
         }
         .inline-block-display {
             display: inline-block;
         }
+        .border-none{
+            border: none;
+        }
+        .grid-style{
+            border : 1px solid #E9EDEF;
+            /* background-color: #F6F6F6; */
+        }
 
-
-       
+        .clearBoth { clear:both; }
     </style>
   </head>
   <body>
-       
-
+   
+   
+    <main role="main" class="container-fluid" >
+        <div class="row ">
+            <!-- justify-content-center -->
+            <div style="width: 80%;">
+                <div  id="main"></div>
+            </div>
+            <div style="width: 10%;">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 100% !important;">
+                    <i class="fa-solid fa-plus mr-2"></i>Add New Staff
+                  </button>
+                <div id="users">
+                <div id="users"></div>
+            </div>
+        </div>
+        </div>
+    </main>
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -88,633 +121,18 @@
               </div>
             </div>
           </div>
-        <div style="width: 80%; margin: 0 auto;">
-            <div class="row no-gutters">
-                <!--<div class="col-12 col-lg-9 col-md-10 mr-5">  
-                    <div id="main">
-                        <div class="card text-white bg-primary mb-3" style="max-width: 150px;">
-                          
-                            <div class="card-body text-center">                            
-                              Shift
-                            </div>
-                          </div>
-                    </div>
-                </div>-->
-                <div class="col-12 col-lg-9 col-md-10 mr-5">  
-                    <div id="main"></div>
-                </div>
-                <div class="col-12 col-lg-2 col-md-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 100% !important;">
-                        <i class="fa-solid fa-plus mr-2"></i>Add New Staff
-                      </button>
-                    <div id="users"></div>
-                </div>
-            </div>
-        </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+     
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> -->
+        <script src="./js/ScheduleTableConfig.js"></script>
     <script>
      
-        let dragParent = null;
-        let clone = null;
-        let users = [
-            {
-                id: 1,
-                name : 'Ali',
-                status : 'AC'
-            },
-            {
-                id: 2, 
-                name : "Bala",
-                status : 'FB',
-            },
-            {
-                id: 3, 
-                name : "Charles",
-                status : 'GA',
-            },
-            {
-                id: 4, 
-                name : "Danny",
-                status : 'GA',
-            },
-            {
-                id: 5, 
-                name : "Ella",
-                status : 'AC',
-            },
-            {
-                id: 6, 
-                name : "Francis",
-                status : 'FB',
-            },
-            {
-                id: 7, 
-                name : "Gina",
-                status : 'AC',
-            },
-            {
-                id: 8, 
-                name : "Hnnah",
-                status : 'GA',
-            },
-            {
-                id: 9, 
-                name : "Ivan",
-                status : 'GA',
-            }
-        ]
-        let data = [
-                {
-                    "id" : 1,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : null,
-                    "s1_shift_1_2_staff_id" : "Charles",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Ella",
-                    "s1_shift_2_2_staff_id" : "Gina",
-                    "s1_shift_2_3_staff_id" : "x",
-
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Bala",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Danny",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Monday"
-                },
-                {
-                    "id" : 2,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ali",
-                    "s1_shift_1_2_staff_id" : "Hannah",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Danny",
-                    "s1_shift_2_2_staff_id" : "Gina",
-                    "s1_shift_2_3_staff_id" : "x",
-
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Fransis",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Ivan",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Tuesday"
-                },
-                {
-                    "id" : 3,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ella",
-                    "s1_shift_1_2_staff_id" : "Hannah",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Charles",
-                    "s1_shift_2_2_staff_id" : "Ivan",
-                    "s1_shift_2_3_staff_id" : "x",
-
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Fransis",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Bala",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Wednesday"
-                },
-                {
-                    "id" : 4,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ali",
-                    "s1_shift_1_2_staff_id" : "Gina",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Charles",
-                    "s1_shift_2_2_staff_id" : "Ella",
-                    "s1_shift_2_3_staff_id" : "x",
-    
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Francis",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Ivan",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Thursday"
-                },
-                {
-                    "id" : 5,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Gina",
-                    "s1_shift_1_2_staff_id" : "Hannah",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Ali",
-                    "s1_shift_2_2_staff_id" : "Danny",
-                    "s1_shift_2_3_staff_id" : "x",
-        
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Francis",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Ivan",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Friday"
-                },
-                {
-                    "id" : 6,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ella",
-                    "s1_shift_1_2_staff_id" : "Hannah",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Charles",
-                    "s1_shift_2_2_staff_id" : "Ivan",
-                    "s1_shift_2_3_staff_id" : "x",
-        
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Bala",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Francis",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Saturday"
-                },
-                {
-                    "id" : 7,
-                    "status_1": "AC",
-                    "s1_shift_1_1_staff_id" : "Ali",
-                    "s1_shift_1_2_staff_id" : "Ella",
-                    "s1_shift_1_3_staff_id" : "x",
-                    "s1_shift_2_1_staff_id" : "Gina",
-                    "s1_shift_2_2_staff_id" : "Charles",
-                    "s1_shift_2_3_staff_id" : "x",
-            
-                    "status_2": "FB",
-                    "s2_shift_1_1_staff_id" : "Dany",
-                    "s2_shift_1_2_staff_id" : "x",
-                    "s2_shift_1_3_staff_id" : "x",
-                    "s2_shift_2_1_staff_id" : "Bala",
-                    "s2_shift_2_2_staff_id" : "x",
-                    "s2_shift_2_3_staff_id" : "x",
-                    "created_at" : "2021/10/02",
-                    "updated_at" : "2021/10/02",
-                    "day_name" : "Sunday"
-                }
-        ];
-        let day = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        // loadData();
-        loadUsers();
+     
         loadEmptyTable();
-        function loadUsers(){
-            let ul = document.getElementById("users");
-            
-            for(let i = 0, count = users.length; i < count; i++){
-                let userDiv = document.createElement("div");
-                userDiv.id= `user_${users[i].id}`;
-                userDiv.className = "list-group-item";
-             
-                userDiv.draggable =  true;
-                userDiv.dataset.data = JSON.stringify(users[i]);
-                userDiv.addEventListener('dragstart', onDragStartUser)
-                userDiv.innerHTML = users[i].name;
-                document.getElementById('users').appendChild(userDiv);
-            }
-        }
-
-        function createColumnForData(rowShiftId, rowIndex, mainCol, shift, status, data = null){
 
 
-            for(let j = 1;j <= 3;j++){
-                let empColDiv = document.createElement("div");
-                empColDiv.id= `shift_${shift}_${mainCol}_emp_${rowIndex}_${j}`;
-                empColDiv.className = "card half-width";
-                empColDiv.draggable =  (j == 1 );
-                empColDiv.dataset.data = data ? data : JSON.stringify({
-                    id : null,
-                    from_employee_name :  null,
-                    status : status,
-                    shift : shift,
-                    div_id : empColDiv.id,
-                    col : j,
-                    draggable : empColDiv.draggable
-                });
-                empColDiv.addEventListener('dragstart', onDragStart)
-                empColDiv.addEventListener('dragenter', onDragEnter)
-                empColDiv.addEventListener('dragover', onDragOver)
-                empColDiv.addEventListener('dragleave', onDragLeave)
-                empColDiv.addEventListener('drop', onDrop)
-                empColDiv.innerHTML = '';
-                document.getElementById(rowShiftId).appendChild(empColDiv);
-            }
-        }
-        
-        function loadEmptyTable(){
-            /**
-             * Create Row and append div in 'main'
-             **/
-            for(let i = 0; i < 7; i++){
-                let row = document.createElement("div");
-                let rowId = "row" + i;
-                row.className="row";
-                row.id= rowId;
-                document.getElementById('main').appendChild(row);
-                /**
-                 * Create Day Name Div
-                 **/
-                let dayDiv = document.createElement("div");
-                dayDiv.className = "card full-width";
-                dayDiv.innerHTML = day[i];
-                document.getElementById(rowId).appendChild(dayDiv);
-
-                  /**
-                 * Create Shift 1 Row
-                 * */
-
-                let shiftDivS1 = document.createElement("div");
-                let shift_1_DivName = "shift_1_div_name_ac_"+ i;
-                shiftDivS1.id = shift_1_DivName;
-                shiftDivS1.className = "inline-block-display";
-                document.getElementById(rowId).appendChild(shiftDivS1);
-
-                let rowShift = document.createElement("div");
-                let rowShiftId = "row-shift-1-" + i;
-                rowShift.className="row";
-                rowShift.id= rowShiftId;
-                document.getElementById(shift_1_DivName).appendChild(rowShift);
-
-                let shitColDiv = document.createElement("div");
-                shitColDiv.className = "card half-width";
-                shitColDiv.innerHTML = `Shift-1`;
-                document.getElementById(rowShiftId).appendChild(shitColDiv);
-
-
-                /**
-                 * Create Shift 2 Row
-                 * */
-                let rowShift2 = document.createElement("div");
-                let rowShift2Id = "row-shift-2-" + i;
-                rowShift2.className="row";
-                rowShift2.id= rowShift2Id;
-                document.getElementById(shift_1_DivName).appendChild(rowShift2);
-
-                shitColDiv = document.createElement("div");
-                shitColDiv.className = "card half-width";
-                shitColDiv.innerHTML = `Shift-2`;
-                document.getElementById(rowShift2Id).appendChild(shitColDiv);
-
-                 /**
-                 * Create Shift 1 Employee Column  For AC
-                 * */
-                createColumnForData(rowShiftId, i, 'ac', 1, 1)
-
-                 /**
-                 * Create Shift 1 Employee Column  For F&B
-                 * */
-                 createColumnForData(rowShiftId, i, 'fb', 2, 1)
-
-                /**
-                 * Create Shift 2 Employee Column  For AC
-                 * */
-                 createColumnForData(rowShift2Id, i, 'ac', 1, 2)
-              
-                /**
-                 * Create Shift 2 Employee Column  For F&B
-                 * */
-                 createColumnForData(rowShift2Id, i, 'fb', 2, 2)
-               
-            }
-            
-        }
-
-
-        function loadData(){            
-                    
-            for(let i=0, count = data.length ; i < count; i++){
-                /**
-                 * Create Row and append div in 'main'
-                 **/
-                let row = document.createElement("div");
-                let rowId = "row" + i;
-                row.className="row";
-                row.id= rowId;
-                document.getElementById('main').appendChild(row);
-                /**
-                 * Create Day Name Div
-                 **/
-                let dayDiv = document.createElement("div");
-                dayDiv.className = "card full-width";
-                dayDiv.innerHTML = data[i].day_name;
-                document.getElementById(rowId).appendChild(dayDiv);
-
-                
-                let shiftDivS1 = document.createElement("div");
-                let shift_1_DivName = "shift_1_div_name_ac_"+ i;
-                shiftDivS1.id = shift_1_DivName;
-                shiftDivS1.className = "inline-block-display";
-                document.getElementById(rowId).appendChild(shiftDivS1);
-
-                /**
-                 * Create Shift 1 Row
-                 * */
-
-                let rowShift = document.createElement("div");
-                let rowShiftId = "row-shift-1-" + i;
-                rowShift.className="row";
-                rowShift.id= rowShiftId;
-                document.getElementById(shift_1_DivName).appendChild(rowShift);
-
-                let shitColDiv = document.createElement("div");
-                shitColDiv.className = "card half-width";
-                shitColDiv.innerHTML = `Shift-1`;
-                document.getElementById(rowShiftId).appendChild(shitColDiv);
-
-                 /**
-                 * Create Shift 1 Employee Column  For AC
-                 * */
-                for(let j = 1;j <= 3;j++){
-                    let empColDiv = document.createElement("div");
-                    empColDiv.id = `shift_1_emp_${i}_${j}`;
-                    empColDiv.className = "card half-width";
-                    empColDiv.draggable =  (j != 3);
-                    empColDiv.dataset.data = JSON.stringify({
-                        id : data[i].id,
-                        from_employee_name :  data[i][`s1_shift_1_${j}_staff_id`],
-                        status : 1,
-                        shift : 1,
-                        div_id : empColDiv.id,
-                        col : j,
-                        draggable : empColDiv.draggable
-                    });
-                    
-                    empColDiv.addEventListener('dragstart', onDragStart)
-                    empColDiv.addEventListener('dragenter', onDragEnter)
-                    empColDiv.addEventListener('dragover', onDragOver)
-                    empColDiv.addEventListener('dragleave', onDragLeave)
-                    empColDiv.addEventListener('drop', onDrop)
-                    empColDiv.innerHTML = data[i][`s1_shift_1_${j}_staff_id`];
-                    document.getElementById(rowShiftId).appendChild(empColDiv);
-                }
-
-                /**
-                 * Create Shift 1 Employee Column  For F&B
-                 * */
-                 for(let j = 1;j <= 3;j++){
-                    let empColDiv = document.createElement("div");
-                    empColDiv.id= `shift_1_fb_emp_${i}_${j}`;
-                    empColDiv.className = "card half-width";
-                    empColDiv.draggable =  (j == 1 );
-                    empColDiv.dataset.data = JSON.stringify({
-                        id : data[i].id,
-                        from_employee_name :  data[i][`s2_shift_1_${j}_staff_id`],
-                        status : 2,
-                        shift : 1,
-                        div_id : empColDiv.id,
-                        col : j,
-                        draggable : empColDiv.draggable
-                    });
-                    empColDiv.addEventListener('dragstart', onDragStart)
-                    empColDiv.addEventListener('dragenter', onDragEnter)
-                    empColDiv.addEventListener('dragover', onDragOver)
-                    empColDiv.addEventListener('dragleave', onDragLeave)
-                    empColDiv.addEventListener('drop', onDrop)
-                    empColDiv.innerHTML = data[i][`s2_shift_1_${j}_staff_id`];
-                    document.getElementById(rowShiftId).appendChild(empColDiv);
-                }
-
-
-                /**
-                 * Create Shift 2 Row
-                 * */
-
-                let rowShift2 = document.createElement("div");
-                let rowShift2Id = "row-shift-2-" + i;
-                rowShift2.className="row";
-                rowShift2.id= rowShift2Id;
-                document.getElementById(shift_1_DivName).appendChild(rowShift2);
-
-                shitColDiv = document.createElement("div");
-                shitColDiv.className = "card half-width";
-                shitColDiv.innerHTML = `Shift-2`;
-                document.getElementById(rowShift2Id).appendChild(shitColDiv);
-
-                /**
-                 * Create Shift 2 Employee Column  For AC
-                 * */
-                for(let j = 1;j <= 3;j++){
-                    let empColDiv = document.createElement("div");
-                    empColDiv.id= `shift_2_ac_emp_${i}_${j}`;
-                    empColDiv.className = "card half-width";
-                    empColDiv.draggable = (j != 3);
-                    empColDiv.dataset.data = JSON.stringify({
-                        id : data[i].id,
-                        from_employee_name :  data[i][`s1_shift_2_${j}_staff_id`],
-                        status : 1,
-                        shift : 2,
-                        div_id : empColDiv.id,
-                        col : j,
-                        draggable : empColDiv.draggable
-                    });
-                    empColDiv.addEventListener('dragstart', onDragStart)
-                    empColDiv.addEventListener('dragenter', onDragEnter)
-                    empColDiv.addEventListener('dragover', onDragOver)
-                    empColDiv.addEventListener('dragleave', onDragLeave)
-                    empColDiv.addEventListener('drop', onDrop)
-                    empColDiv.innerHTML = data[i][`s1_shift_2_${j}_staff_id`];
-                    document.getElementById(rowShift2Id).appendChild(empColDiv);
-                }
-             
-                /**
-                 * Create Shift 2 Employee Column  For F&B
-                 * */
-                for(let j = 1;j <= 3;j++){
-                    let empColDiv = document.createElement("div");
-                    empColDiv.id= `shift_2_fb_emp_${i}_${j}`;
-                    empColDiv.className = "card half-width";
-                    empColDiv.draggable =  (j == 1 );
-                  
-                    empColDiv.dataset.data = JSON.stringify({
-                        id : data[i].id,
-                        from_employee_name :  data[i][`s2_shift_2_${j}_staff_id`],
-                        status : 2,
-                        shift : 2,
-                        div_id : empColDiv.id,
-                        col : j,
-                        draggable : empColDiv.draggable
-                    });
-                    empColDiv.addEventListener('dragstart', onDragStart)
-                    empColDiv.addEventListener('dragenter', onDragEnter)
-                    empColDiv.addEventListener('dragover', onDragOver)
-                    empColDiv.addEventListener('dragleave', onDragLeave)
-                    empColDiv.addEventListener('drop', onDrop)
-                    empColDiv.innerHTML = data[i][`s2_shift_2_${j}_staff_id`];
-                    document.getElementById(rowShift2Id).appendChild(empColDiv);
-                }
-            }
-        }
-
-        function onDragStartUser(e){
-            e.dataTransfer.setData("application/user", e.target.dataset.data);
-            e.dataTransfer.effectAllowed = 'move';
-            dragParent = e.target.parentElement;
-        }
-        function onDragStart(e){
-            e.dataTransfer.setData("application/json", e.target.dataset.data);
-            e.dataTransfer.setData("Text", event.target.dataset.data.from_employee_name);
-
-            e.dataTransfer.effectAllowed = 'move';
-            dragParent = e.target.parentElement;
-        }
-        
-        function onDragEnter(e){
-            e.preventDefault();
-        }
-
-        function onDragOver(e){
-            e.preventDefault();
-        }
-
-        function onDragLeave(e){
-            e.preventDefault();
-        }
-       
-        function onDrop(ev){
-           
-            ev.preventDefault();
-
-            const targetData = ev.target.dataset.data;
-            console.log(targetData)
-            // const targetDiv = JSON.parse(ev.target.dataset.data);
-           
-            if(!targetData){
-                let userObjString = ev.dataTransfer.getData("application/user");
-                if(userObjString){
-                    const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
-                  
-                    data[targetDataIndex][targetDivId] = user_data.name;
-          
-                }
-            }
-            // else{
-            //     const targetDiv = JSON.parse(ev.target.dataset.data);    
-            //     if(!targetDiv.draggable){alert("Currently Not available to assign this shift."); return;}
-
-            //     let targetDataIndex = data.findIndex(e=> e.id == targetDiv.id);
-            //     let targetDivId = `s${targetDiv.status}_shift_${targetDiv.shift}_${targetDiv.col}_staff_id`;
-
-
-            //     let userObjString = ev.dataTransfer.getData("application/user");
-            //     if(userObjString){
-            //         const user_data =  JSON.parse(ev.dataTransfer.getData("application/user"));
-               
-            //         data[targetDataIndex][targetDivId] = user_data.name;
-          
-            //     }else{
-            //         const from_data =  JSON.parse(ev.dataTransfer.getData("application/json"));
-            
-            //         /**
-            //             * Find Index Of array
-            //             * */
-            //         let fromDataIndex = data.findIndex(e=> e.id == from_data.id);
-
-            //         /**
-            //         * Create column name
-            //         * */
-            //         let _fromKey = `s${from_data.status}_shift_${from_data.shift}_${from_data.col}_staff_id`;
-               
-
-            //         /**
-            //             * copy data
-            //             * */
-            //         let cloneFromId = data[fromDataIndex][_fromKey];
-            //         let cloneTargetData = data[targetDataIndex][targetDivId];
-            //         /**
-            //             * swap by index
-            //             * */
-            //         data[fromDataIndex][_fromKey] = cloneTargetData;
-            //         data[targetDataIndex][targetDivId] = cloneFromId;
-        
-               
-            //     }
-            // }
-
-            
-            // removeAllElement();
-
-            // loadData();
-
-            /**
-             * Not drop from user list
-             * */
-            // if(!user_data){
-           
-            // }
-            // else{
-            //     console.log('User Data', user_data)
-            // }
-        }
-
-        function removeAllElement(){
-               /**
-             * Remove all main child element
-             * */
-            const myNode = document.getElementById("main");
-            while (myNode.lastElementChild) {
-                myNode.removeChild(myNode.lastElementChild);
-            }
-        }
+      
     </script>
   </body>
 </html>
