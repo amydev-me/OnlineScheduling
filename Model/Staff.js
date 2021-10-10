@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
 const StaffSchema=new mongoose.Schema({
-    staff_name:{
+    name:{
         type: String,
         required: true
     },
@@ -19,8 +19,7 @@ const StaffSchema=new mongoose.Schema({
     },
     status : {  
         type : String,
-        required : true,
-        default : 'FB'
+        required : true
     }
 });
 

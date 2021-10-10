@@ -51,27 +51,34 @@
             /* background-color: #F6F6F6; */
         }
 
-        .clearBoth { clear:both; }
     </style>
   </head>
   <body>
    
    
     <main role="main" class="container-fluid" >
-        <div class="row justify-content-center">
-            <!-- justify-content-center -->
-            <div style="width: 48%;">
-                <div  id="main"></div>
-            </div>
-            <div style="width: 10%;">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 100% !important;">
-                    <i class="fa-solid fa-plus mr-2"></i>Add New Staff
-                  </button>
-                <div id="users">
-                <div id="users"></div>
-            </div>
+        <div class="row">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+            <i class="fa-solid fa-plus mr-2"></i>Add New Staff
+          </button>
         </div>
-        </div>
+      
+          <div class="row justify-content-center mt-5 mb-5">
+              <!-- justify-content-center -->
+            
+                <div style="width: 48%;">
+                    <div  id="main"></div>
+                </div>
+                <div style="width: 10%;">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 100% !important;">
+                        <i class="fa-solid fa-plus mr-2"></i>Add New Staff
+                      </button>
+                    <div id="users">
+                    <div id="users"></div>
+                </div>
+            </div>
+          </div>
+        
     </main>
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -83,8 +90,9 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+                <form autocomplete="off" onsubmit="onSubmitNewStaff(event)" id="userAddForm">
                 <div class="modal-body">
-                    <form autocomplete="off">
+                 
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Staff name:</label>
                             <input type="text" class="form-control" id="txt-staff-name">
@@ -106,18 +114,19 @@
                         <div class="form-group">
                             <label for="status-list" class="col-form-label">Status:</label>
                             <select class="custom-select" id="status-list">
-                                <option selected>Choose...</option>
+                                <option value="NA" selected>Choose...</option>
                                 <option value="AC">Trained in Amenity Center</option>
                                 <option value="FB">Trained in F&B</option>
-                                <option value="GA">Trained as GAS</option>
+                                <option value="GAS">Trained as GAS</option>
                               </select>
                         </div>
-                      </form>
+                     
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="onClickedAddNewStaff">Save changes</button>
+                  <button type="submit" class="btn btn-primary"  >Save changes</button>
                 </div>
+              </form>
               </div>
             </div>
           </div>
@@ -125,6 +134,7 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
         <script src="./js/ScheduleTableConfig.js"></script>
         <script src="./js/User.js"></script>
   </body>
