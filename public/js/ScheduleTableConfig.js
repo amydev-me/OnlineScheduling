@@ -5,7 +5,7 @@ const SHIFT_1 = 1;
 const SHIFT_2 = 2;
 const HOUSE_KEEPING = 'hk';
 const CAPTAIN = 'cp';
-
+let starting_week_date = null;
 let emptyTasks =   [
     {
         id : null,        
@@ -156,139 +156,26 @@ let emptyTasks =   [
     }
 ];
 
-let tasks = [
-    {
-        id : 1,
-        shift_1_hk_col_1_staff_id : '616292a06f866537183da290',
-        shift_1_hk_col_2_staff_id : "616292af6f866537183da296",
-        shift_1_hk_col_3_staff_id : "x",
-        shift_2_hk_col_1_staff_id : "61629512a624f4bcb5e7aa99",
-        shift_2_hk_col_2_staff_id : "61629527a624f4bcb5e7aa9f",
-        shift_2_hk_col_3_staff_id : "x",
-        shift_1_cp_col_1_staff_id : "616292a86f866537183da293",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "616292b76f866537183da299",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Monday"
-    },
-    {
-        id : 2,
-        shift_1_hk_col_1_staff_id : "616292a06f866537183da290",
-        shift_1_hk_col_2_staff_id : "61629530a624f4bcb5e7aaa2",
-        shift_1_hk_col_3_staff_id : "x",        
-        shift_2_hk_col_1_staff_id : "616292b76f866537183da299",
-        shift_2_hk_col_2_staff_id : "61629527a624f4bcb5e7aa9f",
-        shift_2_hk_col_3_staff_id : "x",
-        shift_1_cp_col_1_staff_id : "6162951ba624f4bcb5e7aa9c",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "61629537a624f4bcb5e7aaa5",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Tuesday"
-    },
-    {
-        id : 3,
-        shift_1_hk_col_1_staff_id : "61629512a624f4bcb5e7aa99",
-        shift_1_hk_col_2_staff_id : "61629530a624f4bcb5e7aaa2",
-        shift_1_hk_col_3_staff_id : "x",
-        shift_2_hk_col_1_staff_id : "616292af6f866537183da296",
-        shift_2_hk_col_2_staff_id : "61629537a624f4bcb5e7aaa5",
-        shift_2_hk_col_3_staff_id : "x",
-        shift_1_cp_col_1_staff_id : "6162951ba624f4bcb5e7aa9c",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "616292a86f866537183da293",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Wednesday"
-    },
-    {
-        id : 4,
-        shift_1_hk_col_1_staff_id : "616292a06f866537183da290",
-        shift_1_hk_col_2_staff_id : "61629527a624f4bcb5e7aa9f",
-        shift_1_hk_col_3_staff_id : "x",
-        shift_2_hk_col_1_staff_id : "616292af6f866537183da296",
-        shift_2_hk_col_2_staff_id : "61629512a624f4bcb5e7aa99",
-        shift_2_hk_col_3_staff_id : "x",
-        shift_1_cp_col_1_staff_id : "6162951ba624f4bcb5e7aa9c",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "61629537a624f4bcb5e7aaa5",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Thursday"
-    },
-    {
-        id : 5,
-        shift_1_hk_col_1_staff_id : "61629527a624f4bcb5e7aa9f",
-        shift_1_hk_col_2_staff_id : "61629530a624f4bcb5e7aaa2",
-        shift_1_hk_col_3_staff_id : "x",
-        shift_2_hk_col_1_staff_id : "616292a06f866537183da290",
-        shift_2_hk_col_2_staff_id : "616292b76f866537183da299",
-        shift_2_hk_col_3_staff_id : "x",        
-        shift_1_cp_col_1_staff_id : "6162951ba624f4bcb5e7aa9c",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "61629537a624f4bcb5e7aaa5",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Friday"
-    },
-    {
-        id : 6,
-        shift_1_hk_col_1_staff_id : "61629512a624f4bcb5e7aa99",
-        shift_1_hk_col_2_staff_id : "61629530a624f4bcb5e7aaa2",
-        shift_1_hk_col_3_staff_id : "x",        
-        shift_2_hk_col_1_staff_id : "616292af6f866537183da296",
-        shift_2_hk_col_2_staff_id : "61629537a624f4bcb5e7aaa5",
-        shift_2_hk_col_3_staff_id : "x",    
-        shift_1_cp_col_1_staff_id : "616292a86f866537183da293",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "6162951ba624f4bcb5e7aa9c",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Saturday"
-    },
-    {
-        id : 7,
-        shift_1_hk_col_1_staff_id : "616292a06f866537183da290",
-        shift_1_hk_col_2_staff_id : "61629512a624f4bcb5e7aa99",
-        shift_1_hk_col_3_staff_id : "x",
-        shift_2_hk_col_1_staff_id : "61629527a624f4bcb5e7aa9f",
-        shift_2_hk_col_2_staff_id : "616292af6f866537183da296",
-        shift_2_hk_col_3_staff_id : "x",
-        shift_1_cp_col_1_staff_id : "616292b76f866537183da299",
-        shift_1_cp_col_2_staff_id : "x",
-        shift_1_cp_col_3_staff_id : "x",
-        shift_2_cp_col_1_staff_id : "616292a86f866537183da293",
-        shift_2_cp_col_2_staff_id : "x",
-        shift_2_cp_col_3_staff_id : "x",
-        created_at : "2021/10/02",
-        updated_at : "2021/10/02",
-        day_name : "Sunday"
-    }
-]
+let tasks = []
 loadData();
+$(document).ready(function() {
+
+    $('.datepicker').datepicker({
+        autoclose: true,
+        startDate: new Date(),
+        daysOfWeekDisabled: "0,2,3,4,5,6"
+    });
+})
 function loadData(){  
+    // tasks = emptyTasks;
     // createScheduleTable();
     axios.get(`/api/get-schedule`).then(({data}) => {
-        tasks = data.details;
+        if(data){
+            tasks = data.details;
+        }else{
+            tasks = emptyTasks;
+        }
+        console.log(tasks)
         createScheduleTable();
     }).catch(error => {
         console.log(error)

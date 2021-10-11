@@ -37,7 +37,7 @@ router.get('/api/get-staffs' ,(req, res) => {
 });
 
 router.get('/api/get-schedule' ,async (req, res) => {  
-    let schedule = await Schedule.findOne({starting_week_date : req.query.starting_week_date}).populate({
+    let schedule = await Schedule.findOne({starting_week_date : '18/10/2021'}).sort('-version_no').populate({
         path: 'details',
         model: 'ScheduleDetail',
         populate: [
@@ -134,19 +134,19 @@ router.post('/api/save-schedule', async (req, res, next) => {
         items.forEach(async (e) => {
             try{
                 const detail = await new ScheduleDetail({
-                    shift_1_hk_col_1_staff_id : mongoose.Types.ObjectId(e.shift_1_hk_col_1_staff_id._id),
-                    shift_1_hk_col_2_staff_id : mongoose.Types.ObjectId(e.shift_1_hk_col_2_staff_id._id),
+                    shift_1_hk_col_1_staff_id : e.shift_1_hk_col_1_staff_id ? mongoose.Types.ObjectId(e.shift_1_hk_col_1_staff_id._id) : null,
+                    shift_1_hk_col_2_staff_id : e.shift_1_hk_col_2_staff_id ? mongoose.Types.ObjectId(e.shift_1_hk_col_2_staff_id._id) : null,
                     shift_1_hk_col_3_staff_id : null,
 
-                    shift_2_hk_col_1_staff_id : mongoose.Types.ObjectId(e.shift_2_hk_col_1_staff_id._id),
-                    shift_2_hk_col_2_staff_id : mongoose.Types.ObjectId(e.shift_2_hk_col_2_staff_id._id),
+                    shift_2_hk_col_1_staff_id : e.shift_2_hk_col_1_staff_id ? mongoose.Types.ObjectId(e.shift_2_hk_col_1_staff_id._id) : null,
+                    shift_2_hk_col_2_staff_id : e.shift_2_hk_col_2_staff_id ? mongoose.Types.ObjectId(e.shift_2_hk_col_2_staff_id._id) : null,
                     shift_2_hk_col_3_staff_id : null,
 
-                    shift_1_cp_col_1_staff_id : mongoose.Types.ObjectId(e.shift_1_cp_col_1_staff_id._id),
+                    shift_1_cp_col_1_staff_id : e.shift_1_cp_col_1_staff_id ? mongoose.Types.ObjectId(e.shift_1_cp_col_1_staff_id._id) : null,
                     shift_1_cp_col_2_staff_id : null,
                     shift_1_cp_col_3_staff_id : null,
 
-                    shift_2_cp_col_1_staff_id : mongoose.Types.ObjectId(e.shift_2_cp_col_1_staff_id._id),
+                    shift_2_cp_col_1_staff_id : e.shift_2_cp_col_1_staff_id ? mongoose.Types.ObjectId(e.shift_2_cp_col_1_staff_id._id) : null,
                     shift_2_cp_col_2_staff_id : null,
                     shift_2_cp_col_3_staff_id : null,
                     day_name : e.day_name
