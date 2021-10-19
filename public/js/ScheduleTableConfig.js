@@ -5,7 +5,13 @@ const SHIFT_1 = 1;
 const SHIFT_2 = 2;
 const HOUSE_KEEPING = 'hk';
 const CAPTAIN = 'cp';
-let starting_week_date = null;
+let schedule =  {
+    _id : null,
+    starting_week_date : null,
+    version_no : 1,
+    is_published : false
+}
+
 let emptyTasks =   [
     {
         id : null,        
@@ -158,24 +164,35 @@ let emptyTasks =   [
 
 let tasks = []
 loadData();
-$(document).ready(function() {
 
-    $('.datepicker').datepicker({
-        autoclose: true,
-        startDate: new Date(),
-        daysOfWeekDisabled: "0,2,3,4,5,6"
-    });
-})
-function loadData(){  
-    // tasks = emptyTasks;
-    // createScheduleTable();
+
+/**
+ * Get Current week Monday
+ */
+function getCurrentWeekMonday(){
+    var dt = new Date();
+    var days = ((dt.getDay() + 7) - 1) % 7;
+    
+    return dt.setDate(dt.getDate() - days);
+}
+
+function loadData(){
     axios.get(`/api/get-schedule`).then(({data}) => {
         if(data){
+            schedule.version_no = data.version_no;
+            schedule._id = data._id;
+            schedule.starting_week_date = data.starting_week_date;
+            schedule.is_published = data.is_published;
+            $(".date").datepicker("update",  schedule.starting_week_date);
             tasks = data.details;
         }else{
+            let _monday =  moment(getCurrentWeekMonday()).format('DD/MM/YYYY');
+            schedule.version_no = 1;
+            schedule._id = null;
+            schedule.starting_week_date = _monday;
+            $(".date").datepicker("update", _monday);
             tasks = emptyTasks;
         }
-        console.log(tasks)
         createScheduleTable();
     }).catch(error => {
         console.log(error)
@@ -280,7 +297,7 @@ function createDutyAssignCol(parentRow, day, type){
 }
 
 function onDragStart(e){ 
-    
+    if(schedule.is_published){alert("Can't modify this schedule already published.")}
     if(!JSON.parse(e.target.dataset.data).draggable){alert("Currently Not available to assign this shift.");e.preventDefault();}
     e.dataTransfer.setData("application/json", e.target.dataset.data);   
     e.dataTransfer.setData("Text", JSON.parse(e.target.dataset.data).column_id);

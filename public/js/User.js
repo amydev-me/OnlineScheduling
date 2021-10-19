@@ -27,6 +27,7 @@ function createUserListView(){
 
 
 function onDragStartUser(e){
+    if(schedule.is_published){alert("Can't modify this schedule already published.")}
     e.dataTransfer.setData("application/user", e.target.dataset.data);
     e.dataTransfer.effectAllowed = 'move';
 }

@@ -37,7 +37,9 @@ router.get('/api/get-staffs' ,(req, res) => {
 });
 
 router.get('/api/get-schedule' ,async (req, res) => {  
-    let schedule = await Schedule.findOne({starting_week_date : '18/10/2021'}).sort('-version_no').populate({
+    // let schedule = await Schedule.findOne({starting_week_date : '18/10/2021'}).sort('-version_no').populate({
+        let schedule = await Schedule.findOne().sort({updatedAt: -1}).populate({
+        
         path: 'details',
         model: 'ScheduleDetail',
         populate: [
@@ -122,15 +124,22 @@ router.post('/api/save-schedule', async (req, res, next) => {
 
         let _maxSch = await Schedule.findOne({starting_week_date : schedule.starting_week_date}).sort('-version_no');
         /**
-         * 
+         * Update old record to inactive
          */
-        const _update = await Schedule.updateMany ({starting_week_date : schedule.starting_week_date}, {is_active: false })
+        await Schedule.updateMany ({starting_week_date : schedule.starting_week_date}, {is_active: false })
         /**
          * Get Max Version No.
          */
         schedule.version_no = _maxSch ? _maxSch.version_no + 1 : 1;
+        /**
+         * Insert schedule into database.
+         */
         const newSchedule= await new Schedule(schedule);
         const _schedule = await newSchedule.save();
+
+        /**
+         * Insert schedule details into database.
+         */
         items.forEach(async (e) => {
             try{
                 const detail = await new ScheduleDetail({
@@ -152,11 +161,22 @@ router.post('/api/save-schedule', async (req, res, next) => {
                     day_name : e.day_name
                 })
                 const detailItem = await detail.save();
-                const _order =  await Schedule.updateOne({_id : _schedule._id}, {$push: { details: detailItem._id }});
+                await Schedule.updateOne({_id : _schedule._id}, {$push: { details: detailItem._id }});
             }catch(e){
                 next(e);
             }
         })
+        res.send('Success')
+    }catch(e){
+        next(e);
+    }
+})
+
+router.post('/api/publish-schedule', async (req, res, next) => {
+    try{
+        const schedule = req.body;
+        await Schedule.updateOne({_id : schedule._id}, {is_published : true});
+        await Schedule.deleteMany({starting_week_date : schedule.starting_week_date, is_published: false})
         res.send('Success')
     }catch(e){
         next(e);

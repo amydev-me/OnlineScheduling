@@ -15,11 +15,6 @@ const ScheduleSchecma=new mongoose.Schema({
         required : true,
         default:1
     },
-    is_active :{
-        type : Boolean,
-        required : true,
-        default:false
-    },
     details: [
         {
             type: Schema.Types.ObjectId,
