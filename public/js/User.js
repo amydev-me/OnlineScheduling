@@ -2,6 +2,18 @@
 
 let users = []
 loadUsers();
+function getStatusColor(status){
+    switch(status){
+        case 'AC' : 
+            return 'bg-warning text-white'
+        case 'FB' : 
+            return 'bg-primary text-white'
+        case 'GAS' : 
+            return 'bg-success text-white'
+        default :
+            return 'bg-light text-dark'
+    }
+}
 function loadUsers(){
     axios.get(`/api/get-staffs`).then(({data}) => {
         users = data.items;
@@ -15,7 +27,7 @@ function createUserListView(){
     for(let i = 0, count = users.length; i < count; i++){
         let userDiv = document.createElement("div");
         userDiv.id= `user_${users[i].id}`;
-        userDiv.className = "list-group-item";
+        userDiv.className = "list-group-item " + getStatusColor(users[i].status);
              
         userDiv.draggable =  true;
         userDiv.dataset.data = JSON.stringify(users[i]);
