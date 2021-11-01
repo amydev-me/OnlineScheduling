@@ -166,6 +166,7 @@ let tasks = []
 loadData();
 
 
+
 /**
  * Get Current week Monday
  */
@@ -175,16 +176,20 @@ function getCurrentWeekMonday(){
     
     return dt.setDate(dt.getDate() - days);
 }
+function onSelectedDateChange(e){
+    console.log(e.format())
+}
 
 function loadData(){
     axios.get(`/api/get-schedule`).then(({data}) => {
-        if(data){
-            schedule.version_no = data.version_no;
-            schedule._id = data._id;
-            schedule.starting_week_date = data.starting_week_date;
-            schedule.is_published = data.is_published;
+        if(data.schedule){
+
+            schedule.version_no = data.schedule.version_no;
+            schedule._id = data.schedule._id;
+            schedule.starting_week_date = data.schedule.starting_week_date;
+            schedule.is_published = data.schedule.is_published;
             $(".date").datepicker("update",  schedule.starting_week_date);
-            tasks = data.details;
+            tasks = data.schedule.details;
         }else{
             let _monday =  moment(getCurrentWeekMonday()).format('DD/MM/YYYY');
             schedule.version_no = 1;
@@ -278,8 +283,6 @@ function createDutyAssignCol(parentRow, day, type){
             task.db_col_name = dbColName;
             task.draggable = isDraggable;
             task.type = type;
-            
-
            
             divCol.draggable =  true;
             divCol.addEventListener('dragstart', onDragStart)
@@ -327,8 +330,10 @@ function onDragDrop(ev){
     let userObjString = ev.dataTransfer.getData("application/user");
     if(userObjString){
         const staff =  JSON.parse(ev.dataTransfer.getData("application/user"));
-        
-        tasks[targetTaskIndex][targetDiv.db_col_name] = { _id : staff._id, name : staff.name};
+        if(staff.status == 'FB'){
+            console.log( tasks[targetTaskIndex])
+        }
+        tasks[targetTaskIndex][targetDiv.db_col_name] = { _id : staff._id, name : staff.name, status : staff.status};
         // { _id : staff._id, name : staff.name};
     }
     else
