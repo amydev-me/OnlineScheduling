@@ -186,8 +186,6 @@ function viewMode(viewMode){
 function showVersion(mode){
     let col = document.getElementById("version-col");
     col.style.display = mode ? 'block' : 'none';
-    // let select = document.getElementById("versions-list");
-    // select.options.length = 0;
 }
 function clearVersions(){
     let select = document.getElementById("versions-list");
