@@ -2,18 +2,7 @@
 
 let users = []
 loadUsers();
-function getStatusColor(status){
-    switch(status){
-        case 'AC' : 
-            return 'bg-warning text-white'
-        case 'FB' : 
-            return 'bg-primary text-white'
-        case 'GAS' : 
-            return 'bg-success text-white'
-        default :
-            return 'bg-light text-dark'
-    }
-}
+
 function loadUsers(){
     axios.get(`/api/get-staffs`).then(({data}) => {
         users = data.items;
