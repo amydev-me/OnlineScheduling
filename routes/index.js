@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const Staff = require('../model/Staff');
-const Schedule = require('../model/Schedule');
-const ScheduleDetail = require('../model/ScheduleDetail');
+const Staff = require('../Model/Staff');
+const Schedule = require('../Model/Schedule');
+const ScheduleDetail = require('../Model/ScheduleDetail');
 const mongoose=require('mongoose');
 const populateSchedule = [
     {
@@ -72,15 +72,57 @@ const populateSchedule = [
         select: {'name' : 1, 'status':1}
     }
 ]
-router.get('/' ,(req, res) => {
+const isAuth = require('../middleware/auth').isAuth;
+const bcrypt = require('bcrypt')
+const passport = require('passport')
+
+
+router.get('/login' ,(req, res) => {
+    res.render('Login')
+});
+router.get('/' , isAuth, (req, res) => {
     res.render('Planner')
 });
+router.get('/planner' , isAuth, (req, res) => {
+    res.render('Planner')
+});
+router.get('/staff-view' , isAuth, (req, res) => {
+    res.render('Staff')
+});
+router.post("/api/login", (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(400).send({
+                message : 'Invalid email or password'
+            })
+        }
+        req.session.loggedin = true;
+        req.session.user = user;
+        req.login(user, (err) => {
+            res.send({
+                email : user.email,
+                full_name : user.full_name
+            })
+        })
+    })(req, res, next)
+})
 
-router.post('/api/create-staff' , (req, res) => {
-    (async () => {
+router.get('/logout', (req, res, next) => {
+    req.session.loggedin = false;
+    req.logout();
+    res.redirect('/login');
+})
+
+router.post('/api/create-staff' , async (req, res) => {
+    // (async () => {
         try{
             const staff = req.body;    
-    
+            const salt = bcrypt.genSaltSync(15);
+            const hash = bcrypt.hashSync(staff.password, salt);
+            staff.password = hash;
             const newStaff= await new Staff(staff);
 
             const _newStaff = await newStaff.save();
@@ -92,9 +134,9 @@ router.post('/api/create-staff' , (req, res) => {
             });
         
         }catch(e){
-            throw e
+            res.send('Error', 500)
         }
-    })().catch( e => {   res.send('Error', 500)})
+    // })().catch( e => {   res.send('Error', 500)})
 })
 
 router.get('/api/get-staffs' ,(req, res) => {
@@ -128,6 +170,22 @@ router.get('/api/get-schedule' ,async (req, res) => {
     });
    
 });
+
+router.get('/api/get-puslished-schedule' ,async (req, res) => {  
+    let schedule = await Schedule.findOne({is_published : true}).sort({updatedAt: -1}).populate({
+
+        path: 'details',
+        model: 'ScheduleDetail',
+        populate: populateSchedule
+    }).exec(async function (err, data) {
+    
+        res.send({
+            schedule : data,
+            
+        })
+    });
+
+});
 router.get('/api/get-schedule-by-filter' ,async (req, res) => {  
         let versions = await Schedule.find({starting_week_date : req.query.starting_week_date},{version_no : 1, _id : 0}).sort({version_no: -1});
         
@@ -154,6 +212,21 @@ router.get('/api/get-schedule-by-filter' ,async (req, res) => {
             })
         });
    
+});
+router.get('/api/get-published-schedule-by-filter' ,async (req, res) => {  
+    let versions = await Schedule.find({starting_week_date : req.query.starting_week_date, is_published : true},{version_no : 1, _id : 0}).sort({version_no: -1});
+    
+    let schedulelist = await Schedule.findOne({starting_week_date : req.query.starting_week_date, is_published : true}).sort({updatedAt: -1}).populate({
+        path: 'details',
+        model: 'ScheduleDetail',
+        populate: populateSchedule
+    }).exec(function (err, data) {
+        res.send({
+            schedule : data
+          
+        })
+    });
+
 });
 
 

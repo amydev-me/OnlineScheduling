@@ -52,18 +52,17 @@ async function onSubmitNewStaff(event){
     data.unit_no = event.target['txt-unitno'].value;
     data.street_name =  event.target['txt-address'].value;
     data.status =  event.target['status-list'].value;
-    
+    data.email =  event.target['txt-email'].value;
+    data.password =  event.target['txt-password'].value;
+    data.phone =  event.target['txt-phone'].value;
+    data.role = 'Planner';
     axios.post(`/api/create-staff`, data).then(({data}) => {
         users = data.items;
         removeAllUserElement();
         createUserListView();
-
         $('#exampleModalCenter').modal('hide');
-
         clearForm(event);
-       
     }).catch(error => {
-
     })
 }
 

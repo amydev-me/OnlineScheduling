@@ -9,6 +9,19 @@ const StaffSchema=new mongoose.Schema({
         type: String,
         required: true
     },
+    email:{
+        type:String,
+        required: true,
+        unique: true
+    },
+    phone:{
+        type:String,
+        required: true,
+    },
+    password:{
+        type:String,
+        required: true,
+    },
     unit_no :{
         type : String,
         required : true
@@ -18,6 +31,9 @@ const StaffSchema=new mongoose.Schema({
         required : true
     },
     status : {  
+        type : String
+    },
+    role : {  
         type : String,
         required : true
     }
