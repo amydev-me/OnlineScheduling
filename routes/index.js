@@ -118,30 +118,28 @@ router.get('/logout', (req, res, next) => {
 })
 
 router.post('/api/create-staff' , async (req, res) => {
-    // (async () => {
-        try{
-            const staff = req.body;    
-            const salt = bcrypt.genSaltSync(15);
-            const hash = bcrypt.hashSync(staff.password, salt);
-            staff.password = hash;
-            const newStaff= await new Staff(staff);
+    try{
+        const staff = req.body;    
+        const salt = bcrypt.genSaltSync(15);
+        const hash = bcrypt.hashSync(staff.password, salt);
+        staff.password = hash;
+        const newStaff= await new Staff(staff);
 
-            const _newStaff = await newStaff.save();
+        const _newStaff = await newStaff.save();
 
-            Staff.find({}, (err, items) => {
-                res.send({
-                    items : items
-                })
-            });
-        
-        }catch(e){
-            res.send('Error', 500)
-        }
-    // })().catch( e => {   res.send('Error', 500)})
+        Staff.find({role : "Staff"}).sort({ status : -1, name : 1 }).exec(function (err, items){
+            res.send({
+                items : items
+            })
+        });
+    
+    }catch(e){
+        res.send('Error', 500)
+    }
 })
 
 router.get('/api/get-staffs' ,(req, res) => {
-    Staff.find({role : "Staff"}).sort({name : 1 }).exec(function (err, items){
+    Staff.find({role : "Staff"}).sort({ status : -1, name : 1 }).exec(function (err, items){
         res.send({
             items : items
         })
