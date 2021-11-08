@@ -8,6 +8,28 @@ function loadUi(){
     let table = document.createElement('table');
     table.className="table table-bordered text-center";
     
+    let thead = document.createElement('thead');
+
+    let th = document.createElement("th");
+    th.innerText = "";
+    th.colSpan = 2;
+    thead.appendChild(th)
+    table.appendChild(thead)
+
+    
+    th = document.createElement("th");
+    th.innerText = "Housekeeping(AC)";
+    th.colSpan = 3;
+    thead.appendChild(th)
+    table.appendChild(thead)
+
+    th = document.createElement("th");
+    th.innerText = "F & B (Captain)";
+    th.colSpan = 3;
+    thead.appendChild(th)
+    table.appendChild(thead)
+
+
     let tableBody = document.createElement('tbody');
     table.appendChild(tableBody);
 
@@ -36,6 +58,7 @@ function loadUi(){
             createDutyAssignCol(tr, DAYS[i], HOUSE_KEEPING, row);
             createDutyAssignCol(tr, DAYS[i], CAPTAIN, row);
         }
+        
     }
     myTableDiv.appendChild(table);
 }
@@ -118,11 +141,13 @@ function getAssignTaskByDayname(day){
     return tasks.find(e=> e.day_name == day);
 }
 
-function checkStaffAssignByDay(day, staff_id, tasks){
-    let task = tasks.find(e=> e.day_name == day);
+function checkStaffAssignByDay(day, staff_id, p_tasks){
+    let task = p_tasks.find(e=> e.day_name == day);
+    
     for(let col in task){          
         if(task[col]){
-            if(task[col]._id == staff_id){                
+            if(task[col]._id == staff_id){      
+               console.log(day,task[col])          
                return true;
                 
             }
@@ -170,18 +195,20 @@ function checkIsStaffRestDay(target_day, staff_id, cloneTasks){
     let alreadyAssignInFri = checkStaffAssignByDay(DAYS[4], staff_id, cloneTasks);
     let alreadyAssignInSat = checkStaffAssignByDay(DAYS[5], staff_id, cloneTasks);
     let alreadyAssignInSun = checkStaffAssignByDay(DAYS[6], staff_id, cloneTasks);
-
+    
     //Monday
     // Check T and W
     if(target_day == DAYS[0]){           
+  
         if(alreadyAssignInTue && alreadyAssignInWed){
+           
             return true;
         }
     }
     // Tuesday
     // Monday && Wed
     // Wed && Thursday
-    else if(target_day == DAYS[1]){
+    else if(target_day == DAYS[1]){        
         if((alreadyAssignInMon &&  alreadyAssignInWed) || (alreadyAssignInWed &&  alreadyAssignInThur)){
             return true;
         }
@@ -191,7 +218,7 @@ function checkIsStaffRestDay(target_day, staff_id, cloneTasks){
     // Monday & The
     // Thur & Fri
     else if(target_day == DAYS[2]){
-            
+        
         if((alreadyAssignInTue &&  alreadyAssignInThur) || (alreadyAssignInMon &&  alreadyAssignInTue) || (alreadyAssignInThur &&  alreadyAssignInFri)){
             return true;
         }
@@ -268,7 +295,8 @@ function onDragDrop(ev){
         let isRestDay = checkIsStaffRestDay(targetDiv.day_name, staff._id, tasks)
 
         if(isRestDay){
-            alert("Staff's rest day");
+            alert(staff.name + " can't work more than 2 consequences day!");
+
             return;
         }
         tasks[targetTaskIndex][targetDiv.db_col_name] = { _id : staff._id, name : staff.name, status : staff.status};
@@ -301,30 +329,33 @@ function onDragDrop(ev){
 
         cloneTasks[fromTaskIndex][fromTaskObj.db_col_name] = cloneTargetData;
         cloneTasks[targetTaskIndex][targetDiv.db_col_name] = cloneStaffId;
-
+        
         if(fromTask.day_name != targetDiv.day_name){
-            if( fromTask[fromTaskObj.db_col_name]){
+            if( targetTask[targetDiv.db_col_name]){
             
-                // let isSameDay = checkStaffAssignByDay(fromTaskObj.day_name, fromTask[fromTaskObj.db_col_name]._id, tasks);
-                // if(isSameDay){
-                //     alert("Can't assign staff in the same day 1!!!");
-                //     return;
-                // }
-
-                let fromRestDay = checkIsStaffRestDay(fromTaskObj.day_name, fromTask[fromTaskObj.db_col_name]._id, cloneTasks )
-                if(fromRestDay){alert('Reset Day'); return;}
+                let isSameDay = checkStaffAssignByDay(fromTaskObj.day_name,targetTask[targetDiv.db_col_name]._id, tasks);
+                if(isSameDay){
+                    alert("Can't assign staff in the same day!!!");
+                    return;
+                }
+                
+              
+                let fromRestDay = checkIsStaffRestDay(fromTaskObj.day_name, targetTask[targetDiv.db_col_name]._id, cloneTasks )
+                if(fromRestDay){
+                    alert(targetTask[targetDiv.db_col_name].name + " can't work more than 2 consequences day!"); return;
+                }
             }
       
-            if(targetTask[targetDiv.db_col_name]){
-                let isSameDay = checkStaffAssignByDay(targetDiv.day_name, targetTask[targetDiv.db_col_name]._id, tasks);
+            if(fromTask[fromTaskObj.db_col_name]){
+                let isSameDay = checkStaffAssignByDay(targetDiv.day_name, fromTask[fromTaskObj.db_col_name]._id, tasks);
                 if(isSameDay){
-                    alert("Can't assign staff in the same day 2!!!");
+                    alert("Can't assign staff in the same day!!!");
                     return;
                 }
 
-                let toRestDay = checkIsStaffRestDay(targetDiv.day_name, targetTask[targetDiv.db_col_name]._id, cloneTasks)
+                let toRestDay = checkIsStaffRestDay(targetDiv.day_name, fromTask[fromTaskObj.db_col_name]._id, cloneTasks)
                 if(toRestDay) {
-                    alert('Reset Day'); return;
+                   alert( fromTask[fromTaskObj.db_col_name] + " can't work more than 2 consequences day!"); return;
                 }
             }
         }

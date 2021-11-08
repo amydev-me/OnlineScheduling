@@ -157,9 +157,13 @@ body{
 }
 table{
     border-collapse: unset;
+    border-spacing: 5px;
 }
 .table td {
     padding: 0;
     vertical-align: top;
     max-width: 50px;;
+    border-spacing: 5px;
+
 }
+

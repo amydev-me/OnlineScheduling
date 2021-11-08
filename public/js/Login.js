@@ -20,7 +20,12 @@ function onClickedSignIn(event){
     }
     console.log(credentials)
     axios.post(`/api/login`, credentials).then(({data}) => {
-        window.location.href = window.location.origin;
+        if(data.role == 'Planner'){
+            window.location.href = window.location.origin;
+        }else{
+            window.location.href = '/staff-view';
+        }
+        // window.location.href = window.location.origin;
     }).catch(error => {
         alert(error.response.data.message)
     })

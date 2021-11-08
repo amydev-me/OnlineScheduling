@@ -9,6 +9,7 @@
 - [Database Connection](#database-connection)
 - [Install Dependencies](#install-dependencies)
 - [Run Dev](#run-dev)
+- [Login Email & Password](#login-email-&-password)
 - [Dependencies For Backend](#dependencies-for-backend)
 - [Dependencies For Frontend](#dependencies-for-frontend)
 
@@ -104,7 +105,17 @@ $ npm install
 # serve with hot reload at localhost:3000
 $ npm start
 ```
-
+## Login Email & Password
+> Planner Login
+```
+email : planner@gmail.com
+password : password
+```
+> Staff Login
+```
+email : ali@gmail.com
+password : password
+```
 
 ## Dependencies For Backend
 

@@ -104,7 +104,8 @@ router.post("/api/login", (req, res, next) => {
         req.login(user, (err) => {
             res.send({
                 email : user.email,
-                full_name : user.full_name
+                full_name : user.name,
+                role : user.role
             })
         })
     })(req, res, next)
@@ -140,7 +141,7 @@ router.post('/api/create-staff' , async (req, res) => {
 })
 
 router.get('/api/get-staffs' ,(req, res) => {
-    Staff.find({}, (err, items) => {
+    Staff.find({role : "Staff"}).sort({name : 1 }).exec(function (err, items){
         res.send({
             items : items
         })

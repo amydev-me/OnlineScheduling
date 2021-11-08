@@ -44,7 +44,7 @@ async function onSubmitNewStaff(event){
     data.email =  event.target['txt-email'].value;
     data.password =  event.target['txt-password'].value;
     data.phone =  event.target['txt-phone'].value;
-    data.role = 'Planner';
+    data.role = 'Staff';
     axios.post(`/api/create-staff`, data).then(({data}) => {
         users = data.items;
         removeAllUserElement();
