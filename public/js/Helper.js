@@ -23,3 +23,4 @@ function getStatusColor(status){
             return 'bg-light text-dark'
     }
 }
+

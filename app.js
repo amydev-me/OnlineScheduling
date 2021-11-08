@@ -33,4 +33,5 @@ require("./config/passport")
 
 app.listen(port, function () {
     console.log('Server started on port ' + port);
+    console.log('http://localhost:' + port);
 });

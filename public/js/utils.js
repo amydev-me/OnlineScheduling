@@ -24,3 +24,12 @@ function createSelectVersion(){
         selectList.options[selectList.options.length] = new Option(versions[i], versions[i]);
     }
 }
+
+function displayMessageDialog(text){
+    
+    if(document.getElementById('txt-message')){
+        
+        document.getElementById('txt-message').innerText = text
+        $('#message-box').modal('show');
+    }
+}

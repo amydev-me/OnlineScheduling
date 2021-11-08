@@ -27,6 +27,21 @@ function onClickedSignIn(event){
         }
         // window.location.href = window.location.origin;
     }).catch(error => {
-        alert(error.response.data.message)
+        if(error.response.data){
+            displayMessageDialog(error.response.data.message)
+        }
+        else{
+            displayMessageDialog("Failed to login!!")
+        }
+        
     })
+}
+
+function displayMessageDialog(text){
+    
+    if(document.getElementById('txt-message')){
+        
+        document.getElementById('txt-message').innerText = text
+        $('#message-box').modal('show');
+    }
 }

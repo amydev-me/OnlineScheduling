@@ -130,8 +130,13 @@ function createDutyAssignCol(parentRow, day, type, row){
 }
 
 function onDragStart(e){ 
-    if(schedule.is_published){alert("Can't modify this schedule already published.")}
-    if(!JSON.parse(e.target.dataset.data).draggable){alert("Currently Not available to assign this shift.");e.preventDefault();}
+    if(schedule.is_published){
+        displayMessageDialog("Can't modify this schedule already published.");
+    }
+    if(!JSON.parse(e.target.dataset.data).draggable){
+        displayMessageDialog("Currently Not available to assign this shift.");
+        e.preventDefault();
+    }
     e.dataTransfer.setData("application/json", e.target.dataset.data);   
     e.dataTransfer.setData("Text", JSON.parse(e.target.dataset.data).column_id);
     e.dataTransfer.effectAllowed = 'move';
@@ -146,10 +151,8 @@ function checkStaffAssignByDay(day, staff_id, p_tasks){
     
     for(let col in task){          
         if(task[col]){
-            if(task[col]._id == staff_id){      
-               console.log(day,task[col])          
+            if(task[col]._id == staff_id){
                return true;
-                
             }
         }
     }
@@ -263,7 +266,7 @@ function onDragDrop(ev){
     ev.preventDefault();
     const targetData = ev.target.dataset.data;
     const targetDiv = JSON.parse(targetData);
-    if(!targetDiv.draggable){alert("Currently Not available to assign this shift."); return;}
+    if(!targetDiv.draggable){ displayMessageDialog("Currently Not available to assign this shift."); return;}
 
    
     let targetTask = tasks.find(e => e.day_name == targetDiv.day_name);
@@ -274,11 +277,13 @@ function onDragDrop(ev){
         const staff =  JSON.parse(ev.dataTransfer.getData("application/user"));   
 
         if(staff.status == 'FB' && targetDiv.type == HOUSE_KEEPING ){          
-            alert("Staff can't involve in House Keeping (Amenity Center)!"); return;
+            displayMessageDialog("Staff can't assign in House Keeping (Amenity Center)!");
+            return;
         }
 
-        if(staff.status == 'AC' && targetDiv.type == CAPTAIN ){          
-            alert("Staff can't involve in F&B (Captain)!"); return;
+        if(staff.status == 'AC' && targetDiv.type == CAPTAIN ){    
+            displayMessageDialog("Staff can't assign in F&B (Captain)!");      
+            return;
         }
 
 
@@ -288,15 +293,14 @@ function onDragDrop(ev){
         */
         let isSameDay = checkStaffAssignByDay(targetDiv.day_name, staff._id, tasks);
         if(isSameDay){
-            alert("Can't assign staff in the same day!!!")
+            displayMessageDialog("Can't assign staff in the same day!!!");      
             return;
         }
 
         let isRestDay = checkIsStaffRestDay(targetDiv.day_name, staff._id, tasks)
 
         if(isRestDay){
-            alert(staff.name + " can't work more than 2 consequences day!");
-
+            displayMessageDialog(staff.name + " can't work more than 2 consequences day!");
             return;
         }
         tasks[targetTaskIndex][targetDiv.db_col_name] = { _id : staff._id, name : staff.name, status : staff.status};
@@ -307,16 +311,20 @@ function onDragDrop(ev){
         const fromTaskObj =  JSON.parse(ev.dataTransfer.getData("application/json"));
 
         if((fromTaskObj.status == 'FB' && targetDiv.type == HOUSE_KEEPING)){          
-            alert("Staff can't involve in House Keeping (Amenity Center)!"); return;
+            displayMessageDialog("Staff can't assign in House Keeping (Amenity Center)!");
+            return;
         }else if((fromTaskObj.status == 'AC' && targetDiv.type == CAPTAIN )){          
-            alert("Staff can't involve in F&B (Captain)!"); return;
+            displayMessageDialog("Staff can't assign in F&B (Captain)!");
+            return;
         }
 
         if((targetDiv.status == 'FB' && fromTaskObj.type == HOUSE_KEEPING) ){          
-            alert("Staff can't involve in House Keeping (Amenity Center)!"); return;
+            displayMessageDialog("Staff can't assign in House Keeping (Amenity Center)!");
+            return;
         }else if(targetDiv.status == 'AC' && fromTaskObj.type == CAPTAIN ){          
-            alert("Staff can't involve in F&B (Captain)!"); return;
-        }        
+            displayMessageDialog("Staff can't assign in F&B (Captain)!");
+            return;
+        }
         
        
         let cloneTasks = _.cloneDeep(tasks)
@@ -334,28 +342,30 @@ function onDragDrop(ev){
             if( targetTask[targetDiv.db_col_name]){
             
                 let isSameDay = checkStaffAssignByDay(fromTaskObj.day_name,targetTask[targetDiv.db_col_name]._id, tasks);
-                if(isSameDay){
-                    alert("Can't assign staff in the same day!!!");
+                if(isSameDay){                    
+                    displayMessageDialog("Can't assign staff in the same day!!!");
                     return;
                 }
                 
               
                 let fromRestDay = checkIsStaffRestDay(fromTaskObj.day_name, targetTask[targetDiv.db_col_name]._id, cloneTasks )
                 if(fromRestDay){
-                    alert(targetTask[targetDiv.db_col_name].name + " can't work more than 2 consequences day!"); return;
+                    displayMessageDialog(targetTask[targetDiv.db_col_name].name + " can't work more than 2 consequences day!");
+                    return;
                 }
             }
       
             if(fromTask[fromTaskObj.db_col_name]){
                 let isSameDay = checkStaffAssignByDay(targetDiv.day_name, fromTask[fromTaskObj.db_col_name]._id, tasks);
                 if(isSameDay){
-                    alert("Can't assign staff in the same day!!!");
+                    displayMessageDialog("Can't assign staff in the same day!!!");
                     return;
                 }
 
                 let toRestDay = checkIsStaffRestDay(targetDiv.day_name, fromTask[fromTaskObj.db_col_name]._id, cloneTasks)
                 if(toRestDay) {
-                   alert( fromTask[fromTaskObj.db_col_name] + " can't work more than 2 consequences day!"); return;
+                    displayMessageDialog(fromTask[fromTaskObj.db_col_name].name + " can't work more than 2 consequences day!");
+                    return;
                 }
             }
         }
