@@ -2,7 +2,7 @@ const express = require('express')
 const passport = require('passport')
 const cookieSession = require('cookie-session')
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 require("./config/database")
 
@@ -32,6 +32,5 @@ app.use(require("./routes/index"))
 require("./config/passport")
 
 app.listen(port, function () {
-    console.log('Server started on port ' + port);
-    console.log('http://localhost:' + port);
+    console.log('Server started on port ');
 });
