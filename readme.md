@@ -9,7 +9,7 @@
 - [Database Connection](#database-connection)
 - [Install Dependencies](#install-dependencies)
 - [Run Dev](#run-dev)
-- [Login Email & Password](#login-email-&-password)
+- [Login](#login)
 - [Dependencies For Backend](#dependencies-for-backend)
 - [Dependencies For Frontend](#dependencies-for-frontend)
 
@@ -105,9 +105,10 @@ $ npm install
 # serve with hot reload at localhost:3000
 $ npm start
 ```
-## Login Email & Password
+## Login
 > Planner Login
 ```
+# If connect with local database, create planner first manually
 email : planner@gmail.com
 password : password
 ```
