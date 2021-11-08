@@ -83,7 +83,7 @@ function onClickedPublish(){
         version_no : schedule.version_no,
         _id : schedule._id
     }).then(({data}) => {
-        
+        loadData();
     }).catch(error => {
 
     })
